@@ -1,0 +1,963 @@
+<script async type="module" crossorigin src="/assets/main.js"></script>
+<link rel="stylesheet" crossorigin href="/assets/main.css">
+<div class="w-full h-10">
+
+</div>
+
+<div class="">
+    <!-- Dropdown with HTMX integration
+    Here the name of the component will be the key to fetch the data from the API
+    eg:
+    - hx-get="http://localhost:8787/
+    - name="component"
+    - (option) value="1" -> will fetch data from http://localhost:8787/?component=1
+    - hx-target="#dropdown-content" -> will display the data in the #dropdown-content element
+    -->
+    <span data-slot="control" class="group relative block w-full">
+        <select id="component-select" name="component"
+            class="relative block w-full appearance-none rounded-lg py-2 pl-4 pr-8 text-base text-zinc-950 dark:text-white border border-zinc-950/10 dark:border-white/10 bg-transparent dark:bg-white/5 focus:outline-none"
+            hx-get="http://localhost:8787/" hx-target="#dropdown-content" hx-trigger="change" hx-swap="innerHTML">
+            <option value="1">😍 Option 1</option>
+            <option value="2">🤔 Option 2</option>
+            <option value="3">😁 Option 3</option>
+        </select>
+        <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+            <svg class="w-5 h-5 text-zinc-500 dark:text-zinc-400" viewBox="0 0 16 16" aria-hidden="true" fill="none">
+                <path d="M5.75 10.75L8 13L10.25 10.75" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round">
+                </path>
+                <path d="M10.25 5.25L8 3L5.75 5.25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                </path>
+            </svg>
+        </span>
+    </span>
+</div>
+
+<!-- Content area to display API response -->
+<div id="dropdown-content" class="mt-4 p-4 bg-gray-100 dark:bg-zinc-800 rounded-lg">
+
+</div>
+
+<br>
+
+<!-- Dropdown Button -->
+<div x-data="{ isOpen: false, selected: 'Left' }" class="relative block w-full">
+    <!-- Trigger Button -->
+    <button @click="isOpen = !isOpen" @click.outside="isOpen = false"
+        class="relative block w-full rounded-lg py-2 pl-4 pr-8 text-left text-base text-zinc-950 dark:text-white border border-zinc-300 dark:border-zinc-700 bg-transparent dark:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500 hover:border-zinc-500 dark:hover:border-zinc-600 transition"
+        aria-haspopup="listbox" :aria-expanded="isOpen">
+        <div class="flex items-center">
+            <!-- SVG Icon for Selected Option -->
+            <template x-if="selected === 'Left'">
+                <svg class="w-5 h-5 text-zinc-500 dark:text-zinc-400" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd"
+                        d="M2 3.75A.75.75 0 0 1 2.75 3h10.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 3.75ZM2 8a.75.75 0 0 1 .75-.75h10.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 8Zm0 4.25a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Z"
+                        clip-rule="evenodd">
+                    </path>
+                </svg>
+            </template>
+            <template x-if="selected === 'Right'">
+                <svg class="w-5 h-5 text-zinc-500 dark:text-zinc-400" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd"
+                        d="M13.25 3.75a.75.75 0 0 0-.75-.75H2.75a.75.75 0 0 0 0 1.5h9.75a.75.75 0 0 0 .75-.75ZM13.25 8a.75.75 0 0 0-.75-.75H2.75a.75.75 0 0 0 0 1.5h9.75a.75.75 0 0 0 .75-.75ZM8.75 12.25a.75.75 0 0 1 .75.75v.25H2.75a.75.75 0 0 1 0-1.5h6Z"
+                        clip-rule="evenodd">
+                    </path>
+                </svg>
+            </template>
+            <template x-if="selected === 'Justified'">
+                <svg class="w-5 h-5 text-zinc-500 dark:text-zinc-400" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd"
+                        d="M2.75 3A.75.75 0 0 1 3.5 2.25h9a.75.75 0 0 1 0 1.5h-9A.75.75 0 0 1 2.75 3ZM2.75 8A.75.75 0 0 1 3.5 7.25h9a.75.75 0 0 1 0 1.5h-9A.75.75 0 0 1 2.75 8ZM2.75 13a.75.75 0 0 1 .75-.75h9a.75.75 0 0 1 0 1.5h-9a.75.75 0 0 1-.75-.75Z"
+                        clip-rule="evenodd">
+                    </path>
+                </svg>
+            </template>
+            <span class="ml-2 truncate" x-text="selected">
+
+            </span>
+        </div>
+        <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+            <svg class="w-5 h-5 text-zinc-500 dark:text-zinc-400" viewBox="0 0 16 16" aria-hidden="true" fill="none">
+                <path d="M5.75 10.75L8 13L10.25 10.75" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round">
+                </path>
+                <path d="M10.25 5.25L8 3L5.75 5.25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                </path>
+            </svg>
+        </span>
+    </button>
+
+    <!-- Dropdown List -->
+    <div x-show="isOpen" x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100"
+        x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 transform scale-100"
+        x-transition:leave-end="opacity-0 transform scale-95"
+        class="absolute left-0 mt-2 w-full bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-lg shadow-lg z-10">
+        <ul class="text-sm text-zinc-900 dark:text-zinc-100">
+            <li @click="selected = 'Left'; isOpen = false"
+                class="flex items-center px-4 py-2 cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-700 m-1 rounded-lg"
+                :class="{ 'bg-zinc-500 text-white dark:bg-zinc-600': selected === 'Left' }">
+                <svg class="w-5 h-5 mr-2 text-zinc-500 dark:text-zinc-400" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M2 3.75A.75.75 0 0 1 2.75 3h10.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 3.75ZM2 8a.75.75 0 0 1 .75-.75h10.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 8Zm0 4.25a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Z"
+                        clip-rule="evenodd"></path>
+                </svg>
+                Left
+                <span x-show="selected === 'Left'" class="ml-auto text-white">&#10003;</span>
+            </li>
+            <li @click="selected = 'Right'; isOpen = false"
+                class="flex items-center px-4 py-2 cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-700 m-1 rounded-lg"
+                :class="{ 'bg-zinc-500 text-white dark:bg-zinc-600': selected === 'Right' }">
+                <svg class="w-5 h-5 mr-2 text-zinc-500 dark:text-zinc-400" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M13.25 3.75a.75.75 0 0 0-.75-.75H2.75a.75.75 0 0 0 0 1.5h9.75a.75.75 0 0 0 .75-.75ZM13.25 8a.75.75 0 0 0-.75-.75H2.75a.75.75 0 0 0 0 1.5h9.75a.75.75 0 0 0 .75-.75ZM8.75 12.25a.75.75 0 0 1 .75.75v.25H2.75a.75.75 0 0 1 0-1.5h6Z"
+                        clip-rule="evenodd"></path>
+                </svg>
+                Right
+                <span x-show="selected === 'Right'" class="ml-auto text-white">&#10003;</span>
+            </li>
+            <li @click="selected = 'Justified'; isOpen = false"
+                class="flex items-center px-4 py-2 cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-700 m-1 rounded-lg"
+                :class="{ 'bg-zinc-500 text-white dark:bg-zinc-600': selected === 'Justified' }">
+                <svg class="w-5 h-5 mr-2 text-zinc-500 dark:text-zinc-400" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 16 16" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M2.75 3A.75.75 0 0 1 3.5 2.25h9a.75.75 0 0 1 0 1.5h-9A.75.75 0 0 1 2.75 3ZM2.75 8A.75.75 0 0 1 3.5 7.25h9a.75.75 0 0 1 0 1.5h-9A.75.75 0 0 1 2.75 8ZM2.75 13a.75.75 0 0 1 .75-.75h9a.75.75 0 0 1 0 1.5h-9a.75.75 0 0 1-.75-.75Z"
+                        clip-rule="evenodd"></path>
+                </svg>
+                Justified
+                <span x-show="selected === 'Justified'" class="ml-auto text-white">&#10003;</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<br>
+
+<!-- Dropdown with AlpineJS integration -->
+<!-- <div x-data="{ isActive: false }" class="relative">
+    <button @click="isActive = !isActive"
+        class="relative w-full rounded-lg py-2 pl-4 pr-8 text-base text-zinc-950 dark:text-white border border-zinc-950/10 dark:border-white/10 bg-transparent dark:bg-white/5 focus:outline-none">
+        <span class="flex items-center">
+            <svg class="w-5 h-5 mr-2 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            <span id="dropdown-placeholder"></span>
+        </span>
+        <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+            <svg class="w-5 h-5 text-zinc-500 dark:text-zinc-400" viewBox="0 0 16 16" aria-hidden="true" fill="none">
+                <path d="M5.75 10.75L8 13L10.25 10.75" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round"></path>
+            </svg>
+        </span>
+    </button>
+
+    <div id="dropdown-content-ttb" x-show="isActive" @click.outside="isActive = false"
+        class="absolute mt-1 w-full bg-white dark:bg-zinc-800 rounded-lg shadow-md z-10">
+    </div>
+</div>
+-->
+
+<div x-data="{ open: false }">
+    <!-- Trigger Button -->
+    <button @click="open = true"
+        class="relative inline-flex items-center justify-center py-1.5 px-4 rounded-lg font-semibold text-base/6 sm:text-sm/6 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500 bg-zinc-600 hover:bg-zinc-500 shadow-md"
+        style="box-shadow: inset 0 1px 0 rgb(255 255 255 / 15%), 0 2px 4px rgba(0, 0, 0, 0.1);">
+        Open Dialog
+    </button>
+
+    <!-- Dialog Overlay -->
+    <div x-show="open" x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 transform translate-y-4"
+        x-transition:enter-end="opacity-100 transform translate-y-0"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100 transform translate-y-0"
+        x-transition:leave-end="opacity-0 transform translate-y-4"
+        class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-gray-800 bg-opacity-50"
+        @click="open = false" x-effect="open && $nextTick(() => $refs.focusField.focus())">
+
+        <!-- Click container to stop propagation -->
+        <div @click.stop
+            class="w-full max-w-lg sm:rounded-2xl rounded-t-3xl bg-white dark:bg-zinc-900 p-6 shadow-lg ring-1 ring-zinc-900/10 sm:mb-auto sm:mt-auto">
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
+                Refund Payment
+            </h2>
+            <p class="mb-4 mt-2 text-gray-600 dark:text-gray-400">
+                The refund will be reflected in the customer's bank account within 2-3 business days after processing.
+            </p>
+
+            <!-- Text Input -->
+            <fieldset class="space-y-6">
+                <div class="">
+                    <label class="block text-zinc-950 sm:text-sm dark:text-white">Text 1</label>
+                    <input type="text"
+                        class="w-full px-3 py-2 mt-1 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:ring-zinc-500 focus:border-zinc-500"
+                        x-ref="focusField" placeholder="">
+                </div>
+                <div class="">
+                    <label class="block text-zinc-950 sm:text-sm dark:text-white">Text 2</label>
+                    <input type="text"
+                        class="w-full px-3 py-2 mt-1 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:ring-zinc-500 focus:border-zinc-500"
+                        placeholder="">
+                </div>
+            </fieldset>
+
+            <!-- Buttons -->
+            <div class="mt-6 flex items-center justify-end gap-3">
+                <button @click="open = false"
+                    class="relative inline-flex items-center justify-center py-1.5 px-4 rounded-lg font-semibold text-base/6 sm:text-sm/6 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500 bg-black-600 hover:bg-zinc-800 shadow-md">
+                    Cancel
+                </button>
+                <button
+                    class="relative inline-flex items-center justify-center py-1.5 px-4 rounded-lg font-semibold text-base/6 sm:text-sm/6 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500 bg-zinc-600 hover:bg-zinc-500 shadow-md"
+                    style="box-shadow: inset 0 1px 0 rgb(255 255 255 / 15%), 0 2px 4px rgba(0, 0, 0, 0.1);">
+                    Refund
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br>
+
+<div x-data="{ selectedOption: 'public' }" class="space-y-4">
+    <!-- Public Option -->
+    <label class="flex items-center space-x-3 cursor-pointer">
+        <input type="radio" x-model="selectedOption" value="public" class="sr-only" />
+        <span
+            class="flex h-5 w-5 items-center justify-center border-2 border-zinc-400 rounded-full dark:border-zinc-600 transition-colors"
+            :class="{ 'bg-zinc-900 dark:bg-zinc-600 border-transparent': selectedOption === 'public' }">
+            <span class="h-2 w-2 rounded-full bg-white transition-opacity"
+                :class="{ 'opacity-100': selectedOption === 'public', 'opacity-0': selectedOption !== 'public' }"></span>
+        </span>
+        <span class="text-sm text-zinc-900 dark:text-zinc-100">Public</span>
+    </label>
+
+    <!-- Private Option -->
+    <label class="flex items-center space-x-3 cursor-pointer">
+        <input type="radio" x-model="selectedOption" value="private" class="sr-only" />
+        <span
+            class="flex h-5 w-5 items-center justify-center border-2 border-zinc-400 rounded-full dark:border-zinc-600 transition-colors"
+            :class="{ 'bg-zinc-900 dark:bg-zinc-600 border-transparent': selectedOption === 'private' }">
+            <span class="h-2 w-2 rounded-full bg-white transition-opacity"
+                :class="{ 'opacity-100': selectedOption === 'private', 'opacity-0': selectedOption !== 'private' }"></span>
+        </span>
+        <span class="text-sm text-zinc-900 dark:text-zinc-100">Private</span>
+    </label>
+</div>
+
+<br>
+
+<div x-data="{ inPerson: false, online: false }" class="space-y-4">
+    <!-- In-Person Checkbox -->
+    <label class="flex items-center space-x-3 cursor-pointer">
+        <input type="checkbox" x-model="inPerson" class="sr-only" />
+        <span
+            class="flex h-5 w-5 items-center justify-center border-2 border-zinc-400 rounded-md dark:border-zinc-600 transition-colors"
+            :class="{ 'bg-zinc-900 dark:bg-zinc-600 border-transparent': inPerson }">
+            <svg x-show="inPerson" xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-white" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+        </span>
+        <span class="text-sm text-zinc-900 dark:text-zinc-100">In-person</span>
+    </label>
+
+    <!-- Online Checkbox -->
+    <label class="flex items-center space-x-3 cursor-pointer">
+        <input type="checkbox" x-model="online" class="sr-only" />
+        <span
+            class="flex h-5 w-5 items-center justify-center border-2 border-zinc-400 rounded-md dark:border-zinc-600 transition-colors"
+            :class="{ 'bg-zinc-900 dark:bg-zinc-600 border-transparent': online }">
+            <svg x-show="online" xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-white" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+        </span>
+        <span class="text-sm text-zinc-900 dark:text-zinc-100">Online</span>
+    </label>
+</div>
+
+<br>
+
+<!-- Single File Upload -->
+<label class="block mb-2 text-sm font-medium text-zinc-900 dark:text-white">
+    Upload file
+</label>
+<input type="file"
+    class="w-full text-zinc-500 font-semibold text-sm bg-gray-50 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-lg cursor-pointer file:cursor-pointer file:border-0 file:py-2 file:px-4 file:mr-4 file:bg-zinc-600 file:text-white file:rounded-lg file:font-semibold hover:bg-zinc-500/50 focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500" />
+<p class="text-xs text-zinc-500 mt-2">PNG, JPG, SVG, WEBP, and GIF are allowed.</p>
+<br>
+
+<!-- File Upload Section -->
+<label class="block mb-2 text-sm font-medium text-zinc-900 dark:text-white">
+    Upload file
+</label>
+<input type="file"
+    class="w-full text-zinc-500 font-semibold text-sm bg-gray-50 dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 rounded-lg cursor-pointer file:cursor-pointer file:border-0 file:py-2 file:px-4 file:mr-4 file:bg-zinc-600 file:text-white file:rounded-lg file:font-semibold hover:bg-zinc-500/50 focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+    multiple />
+<p class="text-xs text-zinc-500 mt-2">PNG, JPG, SVG, WEBP, and GIF are allowed.</p>
+
+<br>
+
+<!-- File Upload Component with Click and Drag-and-Drop Support -->
+<div x-data="{
+        files: [],
+        dragover: false,
+        addFiles(event) { this.files.push(...event.target.files); },
+        drop(event) {
+            this.dragover = false;
+            const droppedFiles = [...event.dataTransfer.files];
+            this.files.push(...droppedFiles);
+        }
+    }" x-id="['dropzone-file']" class="flex flex-col items-center justify-center w-full space-y-4">
+
+    <!-- File Upload Dropzone -->
+    <label :for="$id('dropzone-file')"
+        class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+        :class="{ 'bg-gray-200 dark:bg-gray-600': dragover }" @dragover.prevent="dragover = true"
+        @dragleave.prevent="dragover = false" @drop.prevent="drop($event)">
+        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+            </svg>
+            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span>
+                or drag and drop</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+        </div>
+        <input :id="$id('dropzone-file')" @change="addFiles" type="file" class="hidden" multiple />
+    </label>
+
+    <!-- Uploaded Files List -->
+    <div x-show="files.length > 0" class="w-full p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+        <h4 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Uploaded Files:</h4>
+        <ul class="mt-2 space-y-1 text-gray-600 dark:text-gray-400">
+            <template x-for="(file, index) in files" :key="index">
+                <li class="flex items-center justify-between">
+                    <span x-text="file.name" class="truncate"></span>
+                    <button @click="files.splice(index, 1)" class="text-red-500 hover:text-red-700">Remove</button>
+                </li>
+            </template>
+        </ul>
+    </div>
+</div>
+
+<br>
+
+<div x-data="{ quantity: 1 }">
+    <label for="Quantity" class="sr-only">Quantity</label>
+    <div
+        class="flex flex-row items-center justify-center rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800">
+        <!-- Decrement Button -->
+        <button type="button" @click="quantity = Math.max(1, quantity - 1)"
+            class="px-3 py-2 font-semibold text-zinc-900 dark:text-zinc-400 transition hover:text-zinc-500 dark:hover:text-zinc-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500">
+            &minus;
+        </button>
+
+        <!-- Quantity Input -->
+        <input type="number" id="Quantity" x-model="quantity" min="1"
+            class="mx-2 text-center font-semibold text-zinc-900 dark:text-white bg-white dark:bg-zinc-800 border-transparent focus:ring-0 focus:border-transparent [-moz-appearance:_textfield] sm:text-sm [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
+            aria-label="Quantity">
+
+        <!-- Increment Button -->
+        <button type="button" @click="quantity++"
+            class="px-3 py-2 font-semibold text-zinc-900 dark:text-zinc-400 transition hover:text-zinc-500 dark:hover:text-zinc-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500">
+            &plus;
+        </button>
+    </div>
+</div>
+
+<br>
+
+<!-- Authentication Section with Alpine.js and Tailwind CSS -->
+<div x-data="{ remember: false }">
+    <div>
+        <form class="w-full space-y-8">
+            <h3 class="text-lg font-semibold text-zinc-950 sm:text-base dark:text-white">
+                Sign in
+            </h3>
+            <fieldset class="space-y-6">
+                <!-- Username Input -->
+                <div>
+                    <label class="block text-zinc-950 sm:text-sm dark:text-white">Username</label>
+                    <input type="text"
+                        class="w-full px-3 py-2 mt-1 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:ring-zinc-500 focus:border-zinc-500"
+                        placeholder="">
+                </div>
+
+                <!-- Password Input -->
+                <div>
+                    <label class="block text-zinc-950 sm:text-sm dark:text-white">Password</label>
+                    <input type="password"
+                        class="w-full px-3 py-2 mt-1 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white focus:ring-zinc-500 focus:border-zinc-500"
+                        placeholder="">
+                </div>
+            </fieldset>
+
+            <!-- Remember Me and Forgot Password -->
+            <div class="flex items-center justify-between">
+                <!-- Remember Me Toggle with Switch -->
+                <div class="flex items-center gap-2">
+                    <label for="AcceptConditions"
+                        class="relative inline-block h-6 w-12 cursor-pointer rounded-full transition-colors duration-300"
+                        :class="{ 'bg-blue-500': remember, 'bg-gray-300 dark:bg-zinc-700': !remember }">
+                        <input type="checkbox" id="AcceptConditions" x-model="remember" class="sr-only peer" />
+                        <span
+                            class="absolute inset-y-0 left-0 m-1 w-4 h-4 rounded-full bg-white transition-transform duration-300 transform peer-checked:translate-x-6"></span>
+                    </label>
+                    <label class="text-zinc-950 dark:text-white sm:text-sm">
+                        Remember me
+                    </label>
+                </div>
+                <a href="#" class="text-sm font-semibold text-zinc-600 hover:text-zinc-500 dark:text-zinc-400">
+                    Forgot password?
+                </a>
+            </div>
+
+            <!-- Get Started Button -->
+            <button type="button"
+                class="w-full py-2 rounded-lg font-semibold text-white bg-zinc-600 hover:bg-zinc-500 shadow-md focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500"
+                style="box-shadow: inset 0 1px 0 rgb(255 255 255 / 15%), 0 2px 4px rgba(0, 0, 0, 0.1);">
+                Get started
+            </button>
+
+            <!-- Sign Up Prompt -->
+            <p class="text-center text-sm text-zinc-500 dark:text-zinc-400">
+                Don't have an account?
+                <a href="#"
+                    class="font-semibold text-zinc-950 hover:text-zinc-700 dark:text-white dark:hover:text-zinc-300">
+                    Sign up
+                </a>
+            </p>
+        </form>
+    </div>
+</div>
+
+<br>
+
+<div class="w-full h-10"></div>
+
+<br>
+
+<form class="bg-white dark:bg-zinc-800 shadow-md rounded-lg px-8 pt-6 pb-8 mb-4">
+    <div class="space-y-4 p-4 border border-zinc-300 dark:border-zinc-700 rounded-lg mb-6 bg-white dark:bg-zinc-800">
+        <p class="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-4">1. Cuál es un tipo de sonda rectal</p>
+        <div class="space-y-3">
+            <label class="flex items-center space-x-3 cursor-pointer">
+                <input type="radio" name="question-1" value="0" class="sr-only">
+                <span
+                    class="flex h-5 w-5 items-center justify-center border-2 border-zinc-400 rounded-full dark:border-zinc-600 transition-colors">
+                    <span class="h-2 w-2 rounded-full bg-white transition-opacity opacity-0">
+                    </span>
+                </span>
+                <span class="text-sm text-zinc-900 dark:text-zinc-100">Foley</span>
+            </label>
+            <label class="flex items-center space-x-3 cursor-pointer">
+                <input type="radio" name="question-1" value="1" class="sr-only">
+                <span
+                    class="flex h-5 w-5 items-center justify-center border-2 border-zinc-400 rounded-full dark:border-zinc-600 transition-colors">
+                    <span class="h-2 w-2 rounded-full bg-white transition-opacity opacity-0">
+                    </span>
+                </span>
+                <span class="text-sm text-zinc-900 dark:text-zinc-100">Malecot</span>
+            </label>
+            <label class="flex items-center space-x-3 cursor-pointer">
+                <input type="radio" name="question-1" value="2" class="sr-only">
+                <span
+                    class="flex h-5 w-5 items-center justify-center border-2 border-zinc-400 rounded-full dark:border-zinc-600 transition-colors">
+                    <span class="h-2 w-2 rounded-full bg-white transition-opacity opacity-0">
+                    </span>
+                </span>
+                <span class="text-sm text-zinc-900 dark:text-zinc-100">Levin</span>
+            </label>
+            <label class="flex items-center space-x-3 cursor-pointer">
+                <input type="radio" name="question-1" value="3" class="sr-only">
+                <span
+                    class="flex h-5 w-5 items-center justify-center border-2 border-zinc-400 rounded-full dark:border-zinc-600 transition-colors">
+                    <span class="h-2 w-2 rounded-full bg-white transition-opacity opacity-0">
+                    </span>
+                </span>
+                <span class="text-sm text-zinc-900 dark:text-zinc-100">Todas las respuestas son incorrectas</span>
+            </label>
+        </div>
+    </div>
+    <button name="submitBtn" type="submit" class="
+		relative inline-flex items-center justify-center py-1.5 px-4 rounded-lg font-semibold text-base/6 sm:text-sm/6
+		focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-md transition-colors duration-200
+
+			text-white bg-zinc-600 hover:bg-zinc-500 focus:ring-zinc-500
+			dark:bg-zinc-700 dark:hover:bg-zinc-600 dark:focus:ring-zinc-400
+		" style="box-shadow: rgba(255, 255, 255, 0.15) 0px 1px 0px inset, rgba(0, 0, 0, 0.1) 0px 2px 4px;">Enviar
+        respuestas</button>
+</form>
+
+<section class="w-full h-screen flex flex-col justify-center items-center px-4 md:px-12" x-data="{
+           cards: transformToCards,
+           activeCard: 1,
+           answers: {},
+           selectAnswer(cardId, answerIndex) {
+             if (this.answers[cardId] === undefined) {  // Prevent further changes after first answer
+               this.answers[cardId] = answerIndex;
+             }
+           },
+           markAsBlank(cardId) {
+             if (this.answers[cardId] === undefined) {  // Register as blank if not answered
+               this.answers[cardId] = 'blank';
+             }
+           },
+           isAnswered(cardId) {
+             return this.answers[cardId] !== undefined;
+           },
+           submitResults() {
+             console.log('Final Results:', this.answers);
+             alert('Results submitted! Check console for details.');
+           }
+         }">
+
+    <div class="relative w-full h-full max-w-lg mx-auto flex items-center justify-center">
+
+        <!-- Dynamic Radio Buttons for Active Card Control -->
+        <template x-for="card in cards" :key="card.id">
+            <input :id="'article-' + card.id" type="radio" name="slider" class="sr-only"
+                :checked="card.id === activeCard" @change="activeCard = card.id">
+        </template>
+
+        <!-- Dynamic Card Content with Answer Options -->
+        <template x-for="card in cards" :key="card.id">
+            <div :class="{
+          'absolute inset-0 w-full h-full transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)]': true,
+          'relative z-50 scale-100 translate-x-0': card.id === activeCard,
+          '-translate-x-20 scale-[83.75%] z-40': card.id === activeCard - 1,
+          'translate-x-20 scale-[83.75%] z-40': card.id === activeCard + 1,
+          'opacity-0 -translate-x-40': card.id < activeCard - 1,
+          'opacity-0 translate-x-40': card.id > activeCard + 1
+        }" class="flex items-center justify-center p-4">
+
+                <div
+                    class="space-y-4 p-4 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 w-full max-w-md">
+                    <p class="text-lg font-semibold text-zinc-900 dark:text-zinc-100 mb-4"
+                        x-text="`${card.id}. ${card.title}`"></p>
+
+                    <div class="space-y-3">
+                        <template x-for="(answer, index) in card.content" :key="index">
+                            <label class="flex items-center space-x-3 cursor-pointer"
+                                @click="selectAnswer(card.id, index)">
+
+                                <span
+                                    class="flex h-5 w-5 items-center justify-center border-2 border-zinc-400 rounded-full dark:border-zinc-600 transition-colors"
+                                    :class="{
+                                        'bg-zinc-900 dark:bg-zinc-900': answers[card.id] !== index && answers[card.id] !== 'blank',
+                                        'bg-green-500': (answers[card.id] === card.correctAnswer && index === card.correctAnswer) || (answers[card.id] === 'blank' && index === card.correctAnswer),
+                                        'bg-red-500': answers[card.id] !== card.correctAnswer && answers[card.id] === index,
+                                        'bg-yellow-500': answers[card.id] === 'blank' && index === card.correctAnswer,
+                                      }">
+                                    <!-- Radio Button Inner Circle with Conditional Opacity -->
+                                    <span class="h-2 w-2 rounded-full bg-white transition-opacity" :class="{
+                                              'opacity-100': answers[card.id] === index,
+                                              'opacity-0': answers[card.id] !== index
+                                          }">
+                                    </span>
+                                </span>
+
+                                <!-- Conditional Border Styling for Correct, Incorrect, and Blank Answers -->
+                                <div class="flex items-center gap-2 p-1 rounded-md" :class="{
+                                    'border border-green-600 border-dashed': answers[card.id] !== card.correctAnswer && index === card.correctAnswer && answers[card.id] !== undefined, // Show correct answer border only after incorrect answer
+                                    '': answers[card.id] === undefined || (answers[card.id] !== index && answers[card.id] !== 'blank'),
+                                    'border border-green-500 border-dashed': answers[card.id] === card.correctAnswer && index === card.correctAnswer,
+                                    'border border-red-500 border-dashed': answers[card.id] !== card.correctAnswer && answers[card.id] === index,
+                                    'border border-green-500': answers[card.id] === 'blank' && index === card.correctAnswer
+                                }">
+                                    <span class="text-sm text-zinc-900 dark:text-zinc-100" x-text="answer"></span>
+                                </div>
+                            </label>
+                        </template>
+                    </div>
+                </div>
+
+            </div>
+        </template>
+    </div>
+
+    <!-- Navigation Footer -->
+    <div class="mt-6 flex justify-between w-full max-w-lg">
+
+        <button @click="if (activeCard > 1) activeCard--" :class="{ 'opacity-50 cursor-not-allowed': activeCard === 1 }"
+            :disabled="activeCard === 1" class="text-sm font-medium text-indigo-500 hover:underline px-4 py-2">
+            Previous
+        </button>
+
+        <!-- Submit button is always visible -->
+        <button @click="submitResults()" class="text-sm font-medium text-green-500 hover:underline px-4 py-2">
+            Submit
+        </button>
+
+        <!-- Display 'Blank' button if question is unanswered, otherwise 'Next' button -->
+        <template x-if="!isAnswered(activeCard) && activeCard <= cards.length">
+            <button @click="markAsBlank(activeCard); if (activeCard < cards.length) activeCard++"
+                class="text-sm font-medium text-yellow-500 hover:underline px-4 py-2">
+                Blank
+            </button>
+        </template>
+
+        <template x-if="isAnswered(activeCard) && activeCard < cards.length">
+            <button @click="if (activeCard < cards.length) activeCard++"
+                class="text-sm font-medium text-indigo-500 hover:underline px-4 py-2">
+                Next
+            </button>
+        </template>
+
+    </div>
+</section>
+
+
+<h2 class="mt-14 text-base/7 font-semibold text-zinc-950 sm:text-sm/6 dark:text-white">Estudios recientes</h2>
+<div class="flow-root">
+    <div class="">
+        <div class="inline-block min-w-full align-middle">
+            <!-- Contenido de la sección -->
+
+            <table class="min-w-full text-left text-sm/6 text-zinc-950 dark:text-white">
+                <thead class="text-zinc-500 dark:text-zinc-400">
+                    <tr class="">
+                        <!-- <th
+                        class="border-b border-b-zinc-950/10 px-4 py-2 font-medium dark:border-b-white/10 sm:first:pl-1 sm:last:pr-1">
+                        Test número
+                      </th> -->
+                        <th
+                            class="border-b border-b-zinc-950/10 px-4 py-2 font-medium dark:border-b-white/10 sm:first:pl-1 sm:last:pr-1">
+                            Fecha de realización
+                        </th>
+                        <th
+                            class="border-b border-b-zinc-950/10 px-4 py-2 font-medium dark:border-b-white/10 sm:first:pl-1 sm:last:pr-1">
+                            Tipo
+                        </th>
+                        <th
+                            class="border-b border-b-zinc-950/10 px-4 py-2 font-medium dark:border-b-white/10 sm:first:pl-1 sm:last:pr-1">
+                            Puntuación
+                        </th>
+                        <th
+                            class="text-right border-b border-b-zinc-950/10 px-4 py-2 font-medium dark:border-b-white/10 sm:first:pl-1 sm:last:pr-1">
+                            Valoración
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr
+                        class="has-[[data-row-link][data-focus]]:outline has-[[data-row-link][data-focus]]:outline-2 has-[[data-row-link][data-focus]]:-outline-offset-2 has-[[data-row-link][data-focus]]:outline-blue-500 dark:focus-within:bg-white/[2.5%] hover:bg-zinc-950/[2.5%] dark:hover:bg-white/[2.5%]">
+                        <!-- <td class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                        <a data-row-link="true" aria-label="Order #3000" tabindex="0"
+                          class="absolute inset-0 focus:outline-none" href="/orders/3000"></a>
+                        3000
+                      </td> -->
+                        <td
+                            class="text-zinc-500 relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3000" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3000"></a>
+                            Nov 9, 2024
+                        </td>
+                        <td
+                            class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3000" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3000"></a>
+                            Simulacro
+                        </td>
+                        <td
+                            class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3000" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3000"></a>
+                            <div class="flex items-center gap-2">
+                                <!-- <span data-slot="avatar"
+                            class="size-6 inline-grid shrink-0 align-middle [--avatar-radius:20%] [--ring-opacity:20%] *:col-start-1 *:row-start-1 outline outline-1 -outline-offset-1 outline-black/[--ring-opacity] dark:outline-white/[--ring-opacity] rounded-full *:rounded-full"><img
+                              class="size-full" src="/events/bear-hug-thumb.jpg" alt=""></span> -->
+                                <span>45/60</span>
+                            </div>
+                        </td>
+                        <td
+                            class="text-right relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3000" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3000"></a>
+                            <span
+                                class="inline-flex items-center gap-x-1.5 rounded-md px-1.5 py-0.5 text-sm/5 font-medium sm:text-xs/5 forced-colors:outline bg-lime-400/20 text-lime-700 group-data-[hover]:bg-lime-400/30 dark:bg-lime-400/10 dark:text-lime-300 dark:group-data-[hover]:bg-lime-400/15">
+                                APTO
+                            </span>
+                        </td>
+                    </tr>
+                    <tr
+                        class="has-[[data-row-link][data-focus]]:outline has-[[data-row-link][data-focus]]:outline-2 has-[[data-row-link][data-focus]]:-outline-offset-2 has-[[data-row-link][data-focus]]:outline-blue-500 dark:focus-within:bg-white/[2.5%] hover:bg-zinc-950/[2.5%] dark:hover:bg-white/[2.5%]">
+                        <!-- <td class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                        <a data-row-link="true" aria-label="Order #3001" tabindex="0"
+                          class="absolute inset-0 focus:outline-none" href="/orders/3001"></a>
+                        3001
+                      </td> -->
+                        <td
+                            class="text-zinc-500 relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3001" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3001"></a>
+                            Nov 5, 2024
+                        </td>
+                        <td
+                            class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3001" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3001"></a>
+                            Estudio
+                        </td>
+                        <td
+                            class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3001" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3001"></a>
+                            <div class="flex items-center gap-2">
+                                <!-- <span data-slot="avatar"
+                            class="size-6 inline-grid shrink-0 align-middle [--avatar-radius:20%] [--ring-opacity:20%] *:col-start-1 *:row-start-1 outline outline-1 -outline-offset-1 outline-black/[--ring-opacity] dark:outline-white/[--ring-opacity] rounded-full *:rounded-full"><img
+                              class="size-full" src="/events/six-fingers-thumb.jpg" alt=""></span> -->
+                                <span>21/25</span>
+                            </div>
+                        </td>
+                        <td
+                            class="text-right relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3001" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3001"></a>
+                            <span
+                                class="inline-flex items-center gap-x-1.5 rounded-md px-1.5 py-0.5 text-sm/5 font-medium sm:text-xs/5 forced-colors:outline bg-lime-400/20 text-lime-700 group-data-[hover]:bg-lime-400/30 dark:bg-lime-400/10 dark:text-lime-300 dark:group-data-[hover]:bg-lime-400/15">
+                                APTO
+                            </span>
+                        </td>
+                    </tr>
+                    <tr
+                        class="has-[[data-row-link][data-focus]]:outline has-[[data-row-link][data-focus]]:outline-2 has-[[data-row-link][data-focus]]:-outline-offset-2 has-[[data-row-link][data-focus]]:outline-blue-500 dark:focus-within:bg-white/[2.5%] hover:bg-zinc-950/[2.5%] dark:hover:bg-white/[2.5%]">
+                        <!-- <td class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                        <a data-row-link="true" aria-label="Order #3002" tabindex="0"
+                          class="absolute inset-0 focus:outline-none" href="/orders/3002"></a>
+                        3002
+                      </td> -->
+                        <td
+                            class="text-zinc-500 relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3002" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3002"></a>
+                            Oct 28, 2024
+                        </td>
+                        <td
+                            class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3002" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3002"></a>
+                            Simulacro
+                        </td>
+                        <td
+                            class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3002" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3002"></a>
+                            <div class="flex items-center gap-2">
+                                <!-- <span data-slot="avatar"
+                            class="size-6 inline-grid shrink-0 align-middle [--avatar-radius:20%] [--ring-opacity:20%] *:col-start-1 *:row-start-1 outline outline-1 -outline-offset-1 outline-black/[--ring-opacity] dark:outline-white/[--ring-opacity] rounded-full *:rounded-full"><img
+                              class="size-full" src="/events/we-all-look-the-same-thumb.jpg" alt=""></span> -->
+                                <span>57/60</span>
+                            </div>
+                        </td>
+                        <td
+                            class="text-right relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3002" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3002"></a>
+                            <span
+                                class="inline-flex items-center gap-x-1.5 rounded-md px-1.5 py-0.5 text-sm/5 font-medium sm:text-xs/5 forced-colors:outline bg-lime-400/20 text-lime-700 group-data-[hover]:bg-lime-400/30 dark:bg-lime-400/10 dark:text-lime-300 dark:group-data-[hover]:bg-lime-400/15">
+                                APTO
+                            </span>
+                        </td>
+                    </tr>
+                    <tr
+                        class="has-[[data-row-link][data-focus]]:outline has-[[data-row-link][data-focus]]:outline-2 has-[[data-row-link][data-focus]]:-outline-offset-2 has-[[data-row-link][data-focus]]:outline-blue-500 dark:focus-within:bg-white/[2.5%] hover:bg-zinc-950/[2.5%] dark:hover:bg-white/[2.5%]">
+                        <!-- <td class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                        <a data-row-link="true" aria-label="Order #3003" tabindex="0"
+                          class="absolute inset-0 focus:outline-none" href="/orders/3003"></a>
+                        3003
+                      </td> -->
+                        <td
+                            class="text-zinc-500 relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3003" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3003"></a>
+                            Oct 23, 2024
+                        </td>
+                        <td
+                            class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3003" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3003"></a>
+                            Simulacro
+                        </td>
+                        <td
+                            class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3003" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3003"></a>
+                            <div class="flex items-center gap-2">
+                                <!-- <span data-slot="avatar"
+                            class="size-6 inline-grid shrink-0 align-middle [--avatar-radius:20%] [--ring-opacity:20%] *:col-start-1 *:row-start-1 outline outline-1 -outline-offset-1 outline-black/[--ring-opacity] dark:outline-white/[--ring-opacity] rounded-full *:rounded-full"><img
+                              class="size-full" src="/events/bear-hug-thumb.jpg" alt=""></span> -->
+                                <span>52/60</span>
+                            </div>
+                        </td>
+                        <td
+                            class="text-right relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3003" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3003"></a>
+                            <span
+                                class="inline-flex items-center gap-x-1.5 rounded-md px-1.5 py-0.5 text-sm/5 font-medium sm:text-xs/5 forced-colors:outline bg-lime-400/20 text-lime-700 group-data-[hover]:bg-lime-400/30 dark:bg-lime-400/10 dark:text-lime-300 dark:group-data-[hover]:bg-lime-400/15">
+                                APTO
+                            </span>
+                        </td>
+                    </tr>
+                    <tr
+                        class="has-[[data-row-link][data-focus]]:outline has-[[data-row-link][data-focus]]:outline-2 has-[[data-row-link][data-focus]]:-outline-offset-2 has-[[data-row-link][data-focus]]:outline-blue-500 dark:focus-within:bg-white/[2.5%] hover:bg-zinc-950/[2.5%] dark:hover:bg-white/[2.5%]">
+                        <!-- <td class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                        <a data-row-link="true" aria-label="Order #3004" tabindex="0"
+                          class="absolute inset-0 focus:outline-none" href="/orders/3004"></a>
+                        3004
+                      </td> -->
+                        <td
+                            class="text-zinc-500 relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3004" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3004"></a>
+                            Oct 18, 2024
+                        </td>
+                        <td
+                            class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3004" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3004"></a>
+                            Simulacro
+                        </td>
+                        <td
+                            class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3004" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3004"></a>
+                            <div class="flex items-center gap-2">
+                                <!-- <span data-slot="avatar"
+                            class="size-6 inline-grid shrink-0 align-middle [--avatar-radius:20%] [--ring-opacity:20%] *:col-start-1 *:row-start-1 outline outline-1 -outline-offset-1 outline-black/[--ring-opacity] dark:outline-white/[--ring-opacity] rounded-full *:rounded-full"><img
+                              class="size-full" src="/events/viking-people-thumb.jpg" alt=""></span> -->
+                                <span>32/60</span>
+                            </div>
+                        </td>
+                        <td
+                            class="text-right relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3004" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3004"></a>
+                            <span
+                                class="inline-flex items-center gap-x-1.5 rounded-md px-1.5 py-0.5 text-sm/5 font-medium sm:text-xs/5 forced-colors:outline bg-pink-400/20 text-pink-700 group-data-[hover]:bg-pink-400/30 dark:bg-pink-400/10 dark:text-pink-300 dark:group-data-[hover]:bg-pink-400/15">
+                                NO APTO
+                            </span>
+                        </td>
+                    </tr>
+                    <tr
+                        class="has-[[data-row-link][data-focus]]:outline has-[[data-row-link][data-focus]]:outline-2 has-[[data-row-link][data-focus]]:-outline-offset-2 has-[[data-row-link][data-focus]]:outline-blue-500 dark:focus-within:bg-white/[2.5%] hover:bg-zinc-950/[2.5%] dark:hover:bg-white/[2.5%]">
+                        <!-- <td class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                        <a data-row-link="true" aria-label="Order #3005" tabindex="0"
+                          class="absolute inset-0 focus:outline-none" href="/orders/3005"></a>
+                        3005
+                      </td> -->
+                        <td
+                            class="text-zinc-500 relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3005" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3005"></a>
+                            Oct 14, 2024
+                        </td>
+                        <td
+                            class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3005" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3005"></a>
+                            Estudio
+                        </td>
+                        <td
+                            class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3005" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3005"></a>
+                            <div class="flex items-center gap-2">
+                                <!-- <span data-slot="avatar"
+                            class="size-6 inline-grid shrink-0 align-middle [--avatar-radius:20%] [--ring-opacity:20%] *:col-start-1 *:row-start-1 outline outline-1 -outline-offset-1 outline-black/[--ring-opacity] dark:outline-white/[--ring-opacity] rounded-full *:rounded-full"><img
+                              class="size-full" src="/events/six-fingers-thumb.jpg" alt=""></span> -->
+                                <span>32/35</span>
+                            </div>
+                        </td>
+                        <td
+                            class="text-right relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3005" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3005"></a>
+                            <span
+                                class="inline-flex items-center gap-x-1.5 rounded-md px-1.5 py-0.5 text-sm/5 font-medium sm:text-xs/5 forced-colors:outline bg-lime-400/20 text-lime-700 group-data-[hover]:bg-lime-400/30 dark:bg-lime-400/10 dark:text-lime-300 dark:group-data-[hover]:bg-lime-400/15">
+                                APTO
+                            </span>
+                        </td>
+                    </tr>
+                    <tr
+                        class="has-[[data-row-link][data-focus]]:outline has-[[data-row-link][data-focus]]:outline-2 has-[[data-row-link][data-focus]]:-outline-offset-2 has-[[data-row-link][data-focus]]:outline-blue-500 dark:focus-within:bg-white/[2.5%] hover:bg-zinc-950/[2.5%] dark:hover:bg-white/[2.5%]">
+                        <!-- <td class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                        <a data-row-link="true" aria-label="Order #3006" tabindex="0"
+                          class="absolute inset-0 focus:outline-none" href="/orders/3006"></a>
+                        3006
+                      </td> -->
+                        <td
+                            class="text-zinc-500 relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3006" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3006"></a>
+                            Oct 10, 2024
+                        </td>
+                        <td
+                            class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3006" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3006"></a>
+                            Simulacro
+                        </td>
+                        <td
+                            class="relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3006" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3006"></a>
+                            <div class="flex items-center gap-2">
+                                <!-- <span data-slot="avatar"
+                            class="size-6 inline-grid shrink-0 align-middle [--avatar-radius:20%] [--ring-opacity:20%] *:col-start-1 *:row-start-1 outline outline-1 -outline-offset-1 outline-black/[--ring-opacity] dark:outline-white/[--ring-opacity] rounded-full *:rounded-full"><img
+                              class="size-full" src="/events/we-all-look-the-same-thumb.jpg" alt=""></span> -->
+                                <span>22/60</span>
+                            </div>
+                        </td>
+                        <td
+                            class="text-right relative px-4 border-b border-zinc-950/5 dark:border-white/5 py-4 sm:first:pl-1 sm:last:pr-1">
+                            <a data-row-link="true" aria-label="Order #3006" tabindex="-1"
+                                class="absolute inset-0 focus:outline-none" href="/orders/3006">
+                            </a>
+                            <span
+                                class="inline-flex items-center gap-x-1.5 rounded-md px-1.5 py-0.5 text-sm/5 font-medium sm:text-xs/5 forced-colors:outline bg-pink-400/20 text-pink-700 group-data-[hover]:bg-pink-400/30 dark:bg-pink-400/10 dark:text-pink-300 dark:group-data-[hover]:bg-pink-400/15">
+                                NO APTO
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div class="relative group">
+    <!-- The text with ellipsis -->
+    <span class="block truncate w-40 text-zinc-900 dark:text-white">
+        This is some really long text that doesn't fit in the container
+    </span>
+
+    <!-- Tooltip (appears on hover) -->
+    <div
+        class="absolute hidden group-hover:block bg-zinc-800 text-white text-xs py-1 px-2 rounded-lg shadow-lg -bottom-8 left-0 w-max max-w-xs">
+        This is some really long text that doesn't fit in the container
+    </div>
+</div>
+
+
+<a class="inline-flex items-center gap-2 text-sm/6 text-zinc-500 dark:text-zinc-400" href="/events">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"
+        data-slot="icon" class="size-4 fill-zinc-400 dark:fill-zinc-500">
+        <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"></path>
+    </svg>
+    Previous
+</a>

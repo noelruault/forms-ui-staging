@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>404</title>
+    <script>
+        // Capture full current path including query params and hash
+        const fullPath = window.location.pathname + window.location.search + window.location.hash;
+        // Store the path for index.html to handle
+        localStorage.setItem('redirect', fullPath);
+
+        window.history.replaceState(null, null, "/");
+        window.location.href = "/"
+    </script>
+</head>
+
+<body>
+    <noscript>
+        <meta http-equiv="refresh" content="0;url=/">
+    </noscript>
+    Redirecting...
+</body>
+
+</html>

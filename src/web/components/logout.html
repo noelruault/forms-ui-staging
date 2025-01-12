@@ -1,0 +1,35 @@
+<script async type="module" crossorigin src="/assets/main.js"></script>
+<link rel="stylesheet" crossorigin href="/assets/main.css">
+<!-- 404.html -->
+
+<div class="flex items-center justify-center min-h-screen py-20">
+
+    <div id="error-container"
+        class="relative w-full max-w-2xl p-8 bg-white rounded-xl shadow-[0px_0px_0px_1px_rgba(9,9,11,0.07),0px_2px_2px_0px_rgba(9,9,11,0.05)] dark:bg-zinc-900 dark:shadow-[0px_0px_0px_1px_rgba(255,255,255,0.1)]">
+
+        <!-- 404 Header Section -->
+        <div class="text-center mb-8">
+            <h2 id="error-header" class="text-7xl font-extrabold text-gray-800 dark:text-white"></h2>
+            <p id="error-subheader" class="text-2xl md:text-3xl font-semibold mt-2 text-gray-600 dark:text-zinc-400">
+            </p>
+            <p id="error-description" class="text-lg mt-4 text-gray-500 dark:text-zinc-400"></p>
+        </div>
+
+        <!-- Action List Section will be populated dynamically -->
+        <div id="action-list" class="space-y-6 bg-white dark:bg-zinc-900 rounded-lg shadow-md p-6"></div>
+
+        <!-- Back to Home Button -->
+        <div id="back-to-home-button" class="text-center mt-8">
+            <!-- <button
+                class="relative inline-flex items-center justify-center w-full max-w-md py-1.5 px-4 rounded-lg font-semibold text-base/6 sm:text-sm/6 text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-500 bg-zinc-600 hover:bg-zinc-500 shadow-md"
+                style="box-shadow: inset 0 1px 0 rgb(255 255 255 / 15%), 0 2px 4px rgba(0, 0, 0, 0.1);" type="button">
+                Go back to Home
+            </button> -->
+        </div>
+    </div>
+</div>
+
+<!-- Inspiration
+ - https://merakiui.com/components/marketing/404-pages
+ - https://tailwindui.com/components/marketing/feedback/404-pages#component-91f2f794f1a8e80b6e3701ed6cf68552
+-->

@@ -1,0 +1,299 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en" class="">
+
+<head>
+    <title>Saludeduca</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+    <meta charSet="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="preload" as="image" href="teams/catalyst.svg"> -->
+
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <!-- <script>tailwind.config = { darkMode: 'class' }</script> -->
+
+    <meta name="htmx-config" content='{"withCredentials": true}'>
+    <!-- hx-request='{"credentials": false}' -->
+    <!-- https://stackoverflow.com/a/78689078 -->
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const redirectPath = localStorage.getItem('redirect');
+            if (redirectPath) {
+                localStorage.removeItem('redirect'); // Clean up
+                history.replaceState(null, null, redirectPath);
+                // Trigger your router with the path
+                loadComponent(redirectPath);
+            }
+        });
+    </script>
+
+
+    <script>
+        // if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        //     document.documentElement.classList.add('dark');
+        // } else document.documentElement.classList.remove('dark')
+    </script>
+
+  <script type="module" crossorigin src="/assets/main.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/main.css">
+</head>
+
+
+<body class="transition-colors duration-300">
+
+    <div id="index-html"></div>
+    <div id="loader" class="hidden">
+        <div class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 z-50">
+            <div class="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+        </div>
+    </div>
+    <div id="content-container"
+        class="relative isolate flex min-h-svh w-full bg-white max-lg:flex-col lg:bg-zinc-100 dark:bg-zinc-900 dark:lg:bg-zinc-950">
+        <button aria-label="Open navigation" id="open-nav-button" class="lg:hidden fixed top-4 left-4 z-10">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-6 h-6 text-zinc-900 dark:text-white">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+        </button>
+
+
+        <div id="mobile-nav-container"
+            class="fixed z-50 inset-y-0 left-0 w-full max-w-80 transition duration-300 ease-in-out transform -translate-x-full lg:hidden">
+            <nav
+                class="flex h-full flex-col rounded-lg bg-white shadow-sm ring-1 ring-zinc-950/5 dark:bg-zinc-900 dark:ring-white/10">
+                <div class="-mb-3 px-4 pt-3">
+                    <button aria-label="Close navigation" id="close-nav-button"
+                        class="cursor-pointer relative flex items-center gap-3 rounded-lg p-2 text-xs font-medium text-zinc-500 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <div id="mobile-nav-content" class="flex-1 overflow-y-auto">
+                    <!-- This will be populated with JavaScript -->
+                </div>
+                <div id="mobile-user-profile" class="mt-auto">
+                    <!-- This will be populated with the same content as #user-profile -->
+                </div>
+            </nav>
+        </div>
+
+        <div id="nav-container"
+            class="fixed inset-y-0 left-0 w-full max-w-80 lg:w-64 flex flex-col overflow-hidden bg-white shadow-sm ring-1 ring-zinc-950/5 dark:bg-zinc-950 dark:ring-white/10 transition-transform duration-300 ease-in-out transform -translate-x-full lg:translate-x-0 overflow-visible">
+            <nav class="flex flex-col h-full max-h-screen">
+
+                <div id="nav-logo"
+                    class="flex flex-col border-b border-zinc-950/5 p-4 dark:border-white/5 [&amp;&gt;[data-slot=section]+[data-slot=section]]:mt-2.5">
+                    <span class="relative" x-data="{ isActive: false }">
+                        <button @click="isActive = !isActive" aria-haspopup="menu" aria-expanded="false"
+                            class="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 flex w-full items-center gap-3 rounded-lg px-2 py-2.5 text-left text-base/6 font-medium text-zinc-950 sm:py-2 sm:text-sm/5 data-[slot=icon]:*:size-6 data-[slot=icon]:*:shrink-0 data-[slot=icon]:*:fill-zinc-500 sm:data-[slot=icon]:*:size-5 data-[slot=icon]:last:*:ml-auto data-[slot=icon]:last:*:size-5 sm:data-[slot=icon]:last:*:size-4 data-[slot=avatar]:*:-m-0.5 data-[slot=avatar]:*:size-7 data-[slot=avatar]:*:[--ring-opacity:10%] sm:data-[slot=avatar]:*:size-6 data-[hover]:bg-zinc-950/5 data-[slot=icon]:*:data-[hover]:fill-zinc-950 data-[active]:bg-zinc-950/5 data-[slot=icon]:*:data-[active]:fill-zinc-950 data-[slot=icon]:*:data-[current]:fill-zinc-950 dark:text-white dark:data-[slot=icon]:*:fill-zinc-400 dark:data-[hover]:bg-white/5 dark:data-[slot=icon]:*:data-[hover]:fill-white dark:data-[active]:bg-white/5 dark:data-[slot=icon]:*:data-[active]:fill-white dark:data-[slot=icon]:*:data-[current]:fill-white">
+
+                            <!-- Avatar -->
+                            <span data-slot="avatar">
+                                <img data-brand-logo class="h-full w-full object-cover" src="/favicon.svg"
+                                    alt="SaludEduca Avatar" />
+                            </span>
+
+                            <!-- Text/Name -->
+                            <span class="truncate" data-brand-name>SaludEduca</span>
+
+                            <!-- Icon -->
+                            <svg data-brand-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
+                                fill="currentColor" aria-hidden="true" data-slot="icon"
+                                class="ml-auto h-5 w-5 text-gray-500 dark:text-gray-400">
+                                <path fill-rule="evenodd"
+                                    d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown menu -->
+                        <div data-dropdown-menu
+                            class="absolute z-10 mt-2 w-56 divide-y divide-gray-100 rounded-md border bg-white shadow-lg dark:divide-gray-600 dark:border-gray-700 dark:bg-gray-800"
+                            x-show="isActive" @click.away="isActive = false" @keydown.escape.window="isActive = false"
+                            x-transition>
+                            <div data-brand-dropdown class="p-2">
+                                <!-- Dropdown content -->
+                            </div>
+                        </div>
+                    </span>
+                </div>
+                <div
+                    class="flex flex-1 flex-col overflow-y-auto p-4 [&amp;&gt;[data-slot=section]+[data-slot=section]]:mt-8 min-h-0">
+                    <div data-nav-links data-slot="section" class="flex flex-col gap-0.5">
+                        <!-- Nav elements will be inserted here by the JavaScript -->
+                    </div>
+                    <div data-latest-links data-slot="section" class="max-lg:hidden flex flex-col gap-0.5">
+                        <!-- Latest events will be inserted here by the JavaScript -->
+                    </div>
+
+                    <div aria-hidden="true" class="mt-8 flex-1"></div>
+
+                    <span class="relative">
+                        <a data-theme-toggle
+                            class="flex w-full items-center gap-3 rounded-lg px-2 py-2.5 text-left text-base/6 font-medium text-zinc-950 sm:py-2 sm:text-sm/5 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white cursor-pointer">
+                            <span class="size-6 shrink-0 fill-zinc-500 dark:fill-zinc-400">
+                                <svg id="theme-toggle-dark-icon" class="dark:hidden block w-5 h-5" fill="currentColor"
+                                    viewBox="0 0 20 20">
+                                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                                </svg>
+                                <svg id="theme-toggle-light-icon" class="dark:block hidden w-5 h-5" fill="currentColor"
+                                    viewBox="0 0 20 20">
+                                    <path
+                                        d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                                        fill-rule="evenodd" clip-rule="evenodd"></path>
+                                </svg>
+                            </span>
+                            <span class="truncate">Cambiar tema</span>
+                        </a>
+                    </span>
+                    <div data-support-links data-slot="section" class="flex flex-col gap-0.5">
+                        <!-- Support list will be inserted here by the JavaScript -->
+                    </div>
+
+                    <span class="relative">
+                        <a
+                            class="flex w-full items-center gap-3 rounded-lg px-2 py-2.5 text-left text-base/6 font-medium text-zinc-950 sm:py-2 sm:text-sm/5 data-[hover]:bg-zinc-950/5 dark:text-white dark:data-[hover]:bg-white/5 cursor-help">
+                            <span class="size-6 shrink-0 fill-zinc-500 dark:fill-zinc-400">
+                                <svg viewbox="0 0 450 450" xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 502.001 502.001"
+                                    xml:space="preserve">
+                                    <g>
+                                        <path style="fill:#FFFFFF;" d="M337.1,254.779c-34.545,5.548-67.046-17.959-72.594-52.504s17.959-67.046,52.504-72.594
+                                		C417.26,113.581,492,261.545,492,261.545S413.358,242.533,337.1,254.779z" />
+                                        <path style="fill:#FFFFFF;" d="M111.366,249.668c22.606,3.63,43.875-11.752,47.505-34.358s-11.752-43.875-34.358-47.505
+                                		C58.91,157.269,10,254.096,10,254.096S61.463,241.654,111.366,249.668z" />
+                                        <g>
+                                            <path style="fill:#333333;"
+                                                d="M500.926,257.036c-0.787-1.559-19.642-38.57-51.366-74.119 c-18.881-21.157-38.428-37.369-58.096-48.187c-25.338-13.936-50.919-18.958-76.04-14.923 c-19.345,3.106-36.321,13.561-47.804,29.437c-7.96,11.006-12.612,23.705-13.685,36.905c-14.89,4.115-27.968,9.962-38.457,17.275 c-6.814,4.751-12.31,10.029-16.389,15.628c-7.313-7.048-17.71-12.946-30.119-16.851c-2.833-22.038-19.845-40.571-42.872-44.27 C54.103,146.367,3.206,245.368,1.074,249.587c-1.758,3.479-1.333,7.664,1.088,10.72c1.923,2.426,4.826,3.789,7.838,3.789 c0.781,0,1.569-0.092,2.35-0.28c0.496-0.119,50.059-11.879,97.431-4.274c13.573,2.182,27.178-1.056,38.314-9.11 c9.486-6.861,16.199-16.524,19.331-27.622c15.11,5.769,23.256,14.539,23.256,20.116l-0.085,82.058 c-0.006,5.523,4.467,10.005,9.989,10.011c0.004,0,0.007,0,0.011,0c5.518,0,9.994-4.471,10-9.989l0.085-82.068 c0-12.153,15.442-27.405,44.459-36.331c3.621,18.201,13.808,34.125,28.926,45.06c15.874,11.481,35.271,16.099,54.617,12.987 c73.286-11.767,150.2,6.43,150.965,6.612c0.78,0.188,1.568,0.28,2.35,0.28c3.012,0,5.915-1.363,7.837-3.789 C502.259,264.7,502.684,260.517,500.926,257.036z M136.374,234.225c-6.809,4.925-15.124,6.898-23.422,5.57 c-31.319-5.031-62.832-2.406-83.126,0.52c15.812-24.062,47.327-63.308,84.686-63.308c2.772,0,5.583,0.217,8.415,0.671 c11.54,1.854,20.607,9.805,24.457,20.032c-11.101-1.384-22.205-1.709-33.09-0.938c-5.509,0.39-9.659,5.172-9.269,10.681 c0.39,5.51,5.168,9.684,10.681,9.269c10.601-0.749,21.456-0.317,32.302,1.254C146.019,224.494,141.991,230.162,136.374,234.225z M335.514,244.906c-14.064,2.259-28.178-1.096-39.725-9.447c-11.182-8.087-18.651-19.929-21.165-33.448 c0.667-0.115,1.324-0.236,2.001-0.344c24.446-3.926,48.841-4.08,72.503-0.46c5.45,0.836,10.562-2.912,11.397-8.372 s-2.913-10.563-8.372-11.397c-25.307-3.874-51.347-3.77-77.421,0.29c1.482-7.401,4.538-14.464,9.094-20.763 c8.351-11.548,20.699-19.151,34.77-21.411c71.229-11.429,130.472,70.104,153.813,107.941 C443.222,242.571,389.167,236.289,335.514,244.906z" />
+                                            <path style="fill:#333333;"
+                                                d="M414.567,199.57c-10.438-4.554-21.218-8.425-32.042-11.508c-5.307-1.509-10.844,1.567-12.356,6.88 c-1.512,5.312,1.568,10.844,6.88,12.356c9.968,2.838,19.899,6.405,29.521,10.604c1.302,0.567,2.659,0.837,3.994,0.837 c3.855,0,7.53-2.244,9.171-6.004C421.942,207.674,419.63,201.779,414.567,199.57z" />
+                                            <path style="fill:#333333;"
+                                                d="M200.578,347c-0.004,0-0.008,0-0.012,0c-5.518,0-9.993,4.47-10,9.988l-0.02,16.544 c-0.007,5.522,4.466,10.005,9.988,10.012c0.004,0,0.008,0,0.012,0c5.518,0,9.993-4.47,10-9.988l0.02-16.544 C210.573,351.489,206.101,347.007,200.578,347z" />
+                                        </g>
+                                    </g>
+                                </svg>
+
+                            </span>
+                            <span data-version-box class="truncate">
+                                Version
+                            </span>
+                        </a>
+                    </span>
+
+                </div>
+                <div data-user-container
+                    class="flex flex-col border-t border-zinc-950/5 p-4 dark:border-white/5 [&amp;&gt;[data-slot=section]+[data-slot=section]]:mt-2.5 mt-auto hidden">
+                    <span class="relative" x-data="{ isActive: false }">
+                        <button @click="isActive = !isActive" type="button" aria-haspopup="menu" aria-expanded="false"
+                            class="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex w-full items-center gap-3 rounded-lg px-2 py-2.5 text-left text-base font-medium text-zinc-950 sm:py-2 sm:text-sm data-[slot=icon]:*:size-6 data-[slot=icon]:*:shrink-0 data-[slot=icon]:*:fill-zinc-500 sm:data-[slot=icon]:*:size-5 data-[slot=icon]:last:*:ml-auto data-[slot=icon]:last:*:size-5 sm:data-[slot=icon]:last:*:size-4 data-[slot=avatar]:*:-m-0.5 data-[slot=avatar]:*:size-7 data-[hover]:bg-zinc-950/5 data-[slot=icon]:*:data-[hover]:fill-zinc-950 data-[active]:bg-zinc-950/5 data-[slot=icon]:*:data-[active]:fill-zinc-950 data-[slot=icon]:*:data-[current]:fill-zinc-950 dark:text-white dark:data-[slot=icon]:*:fill-zinc-400 dark:data-[hover]:bg-white/5 dark:data-[slot=icon]:*:data-[hover]:fill-white dark:data-[active]:bg-white/5 dark:data-[slot=icon]:*:data-[active]:fill-white dark:data-[slot=icon]:*:data-[current]:fill-white hover:text-black dark:hover:text-white">
+                            <span
+                                class="absolute left-1/2 top-1/2 size-[max(100%,2.75rem)] -translate-x-1/2 -translate-y-1/2 [@media(pointer:fine)]:hidden"
+                                aria-hidden="true"></span>
+                            <span class="flex min-w-0 items-center gap-3">
+                                <span data-slot="avatar"
+                                    class="size-10 inline-grid shrink-0 align-middle [--avatar-radius:20%] [--ring-opacity:20%] *:col-start-1 *:row-start-1 outline outline-1 -outline-offset-1 outline-black/[--ring-opacity] dark:outline-white/[--ring-opacity] rounded-[--avatar-radius] *:rounded-[--avatar-radius]">
+                                    <img data-user-avatar class="size-full" src="" alt="" />
+                                </span>
+                                <span class="min-w-0">
+                                    <span data-user-name
+                                        class="block truncate text-sm font-medium text-zinc-950 dark:text-white"></span>
+                                    <span id="user-profile-email"
+                                        class="block truncate text-xs font-normal text-zinc-500 dark:text-zinc-400"></span>
+                                </span>
+                            </span>
+                            <svg data-user-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
+                                fill="currentColor" aria-hidden="true" data-slot="icon"
+                                class="ml-auto h-5 w-5 text-gray-500 dark:text-gray-400">
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown menu -->
+                        <div data-user-dropdown
+                            class="absolute z-10 bottom-full mb-2 p-2 right-0 w-56 origin-bottom rounded-md border bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800"
+                            x-show="isActive" @click.away="isActive = false" @keydown.escape.window="isActive = false"
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 translate-y-1"
+                            x-transition:enter-end="opacity-100 translate-y-0"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="opacity-100 translate-y-0"
+                            x-transition:leave-end="opacity-0 translate-y-1">
+                            <!-- Menu items will be dynamically generated here -->
+                        </div>
+                    </span>
+                </div>
+
+                <div data-login-container
+                    class="flex flex-col border-t border-zinc-950/5 p-4 dark:border-white/5 [&amp;&gt;[data-slot=section]+[data-slot=section]]:mt-2.5 mt-auto hidden">
+                    <span class="relative">
+                        <a data-login-anchor>
+                            <button type="button"
+                                class="hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex w-full items-center gap-3 rounded-lg px-2 py-2.5 text-left text-base font-medium text-zinc-950 sm:py-2 sm:text-sm data-[slot=icon]:*:size-6 data-[slot=icon]:*:shrink-0 data-[slot=icon]:*:fill-zinc-500 sm:data-[slot=icon]:*:size-5 data-[slot=icon]:last:*:ml-auto data-[slot=icon]:last:*:size-5 sm:data-[slot=icon]:last:*:size-4 data-[slot=avatar]:*:-m-0.5 data-[slot=avatar]:*:size-7 data-[hover]:bg-zinc-950/5 data-[slot=icon]:*:data-[hover]:fill-zinc-950 data-[active]:bg-zinc-950/5 data-[slot=icon]:*:data-[active]:fill-zinc-950 data-[slot=icon]:*:data-[current]:fill-zinc-950 dark:text-white dark:data-[slot=icon]:*:fill-zinc-400 dark:data-[hover]:bg-white/5 dark:data-[slot=icon]:*:data-[hover]:fill-white dark:data-[active]:bg-white/5 dark:data-[slot=icon]:*:data-[active]:fill-white dark:data-[slot=icon]:*:data-[current]:fill-white hover:text-black dark:hover:text-white">
+                                <span
+                                    class="absolute left-1/2 top-1/2 size-[max(100%,2.75rem)] -translate-x-1/2 -translate-y-1/2 [@media(pointer:fine)]:hidden"
+                                    aria-hidden="true"></span>
+                                <span class="flex min-w-0 items-center gap-3">
+                                    <span data-slot="avatar"
+                                        class="size-10 inline-grid shrink-0 align-middle [--avatar-radius:20%] [--ring-opacity:20%] *:col-start-1 *:row-start-1 outline outline-1 -outline-offset-1 outline-black/[--ring-opacity] dark:outline-white/[--ring-opacity] rounded-[--avatar-radius] *:rounded-[--avatar-radius]">
+                                        <img data-login-avatar class="size-full" src="" alt="" />
+                                    </span>
+                                    <span class="min-w-0">
+                                        <span data-login-name
+                                            class="block truncate text-sm font-medium text-zinc-950 dark:text-white"></span>
+                                    </span>
+                                </span>
+                            </button>
+                        </a>
+                    </span>
+                </div>
+            </nav>
+        </div>
+
+        <span hidden=""
+            style="position:fixed;top:1px;left:1px;width:1px;height:0;padding:0;margin:-1px;overflow:hidden;clip:rect(0, 0, 0, 0);white-space:nowrap;border-width:0;display:none"></span>
+
+        <header class="flex items-center px-4 hidden lg:hidden">
+            <div class="min-w-0 flex-1">
+                <nav class="flex flex-1 items-center gap-4 py-2.5">
+                    <div aria-hidden="true" class="-ml-4 flex-1"></div>
+
+                    <div id="mobile-nav-user-profile" class="lg:hidden fixed top-4 right-4 z-50"
+                        x-data="{ isOpen: false }">
+                        <button @click="isOpen = !isOpen" type="button" aria-haspopup="menu" :aria-expanded="isOpen"
+                            class="flex items-center justify-center w-10 h-10 rounded-full bg-white shadow-sm ring-1 ring-zinc-950/10 dark:bg-zinc-800 dark:ring-white/10">
+                            <img id="mobile-user-profile-avatar" class="w-8 h-8 rounded-full object-cover" src=""
+                                alt="">
+                        </button>
+
+                        <div id="mobile-user-profile-dropdown" x-show="isOpen" @click.away="isOpen = false"
+                            @keydown.escape.window="isOpen = false"
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                            class="absolute z-10 top-full right-0 mt-2 w-56 max-h-[calc(100vh-5rem)] overflow-y-auto origin-top-right rounded-md border bg-white shadow-lg dark:border-gray-700 dark:bg-gray-800">
+                            <div class="p-2">
+                                <!-- Menu items will be dynamically generated here -->
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <!-- <main id="main-content" class="main-content flex flex-1 flex-col pb-2 lg:min-w-0 lg:pl-64 lg:pr-2 lg:pt-2"></main> -->
+        <main id="main-container" class="main-content h-screen flex flex-1 flex-col lg:pl-64">
+            <div id="main-content"
+                class="h-auto box-content grow lg:rounded-lg lg:bg-white lg:shadow-sm lg:ring-1 lg:ring-zinc-950/5 dark:lg:bg-zinc-900 dark:lg:ring-white/10">
+                <!-- This will be populated with the main content of the current route -->
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>
