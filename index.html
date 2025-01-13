@@ -19,17 +19,6 @@
     <!-- https://stackoverflow.com/a/78689078 -->
 
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const redirectPath = localStorage.getItem('redirect');
-            if (redirectPath) {
-                localStorage.removeItem('redirect'); // Clean up
-                history.replaceState(null, null, redirectPath);
-                // Trigger your router with the path
-                loadComponent(redirectPath);
-            }
-        });
-    </script>
 
 
     <script>
