@@ -17,7 +17,8 @@
             }" @click="if (card.id === $store.studyData.activeCard - 1) $store.studyData.activeCard--; if (card.id === $store.studyData.activeCard + 1 && $store.studyData.isAnswered($store.studyData.activeCard)) $store.studyData.activeCard++"
                 class="flex items-center justify-center">
 
-                <div class="h-[60vh] w-full min-w-[80vw] sm:min-w-[65vw] lg:min-w-[50vw] flex flex-col p-6 space-y-4 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 overflow-y-scroll">
+                <div
+                    class="h-[60vh] w-full min-w-[80vw] sm:min-w-[65vw] lg:min-w-[50vw] flex flex-col p-6 space-y-4 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 overflow-y-scroll">
                     <p class="text-base sm:text-lg md:text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2 sm:mb-4"
                         x-text="`${card.id}. ${card.title}`"></p>
                     <div class="space-y-1">
@@ -25,7 +26,7 @@
                             <label class="flex items-center"
                                 @click="card.id === $store.studyData.activeCard && $store.studyData.selectAnswer(card.id, index, $store.studyData.autonext)">
                                 <span
-                                    class="flex flex-shrink-0 w-4 h-4 sm:w-5 sm:h-5 items-center justify-center border-2 rounded-full transition-colors border-zinc-400 dark:border-zinc-600"
+                                    class="flex flex-shrink-0 mr-1 w-4 h-4 sm:w-5 sm:h-5 items-center justify-center border-2 rounded-full transition-colors border-zinc-400 dark:border-zinc-600"
                                     :class="{
                                         'bg-yellow-500': $store.studyData.answers[card.id] === null && index === card.correctAnswer,
                                         'bg-green-500': $store.studyData.answers[card.id] === card.correctAnswer && index === card.correctAnswer,
@@ -86,14 +87,14 @@
 
                         <!-- Explanation Accordion -->
                         <div x-data="{ expanded: false }"
-                            x-show="card.explanation && $store.studyData.isAnswered(card.id)"
-                            class="w-full mt-4">
+                            x-show="card.explanation && $store.studyData.isAnswered(card.id)" class="w-full mt-4">
                             <button @click="expanded = !expanded" type="button"
                                 class="flex items-center justify-between mt-5 w-full text-left text-base/6 sm:text-sm/5 font-semibold text-zinc-900 dark:text-zinc-100">
                                 <span>Ver explicación</span>
                                 <svg :class="expanded ? 'rotate-180' : 'rotate-0'"
-                                    class="h-5 w-5 transform transition-transform duration-300 ease-in-out" xmlns="http://www.w3.org/2000/svg"
-                                    fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    class="h-5 w-5 transform transition-transform duration-300 ease-in-out"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
                                 </svg>
                             </button>
@@ -164,11 +165,11 @@
 
         <!-- Button to go to the next card if the current card has already been answered, locked if on the last card -->
         <template x-if="$store.studyData.isAnswered($store.studyData.activeCard)">
-            <button @click="if ($store.studyData.activeCard < $store.studyData.cards.length) $store.studyData.activeCard++"
+            <button
+                @click="if ($store.studyData.activeCard < $store.studyData.cards.length) $store.studyData.activeCard++"
                 :class="{ 'opacity-50 cursor-not-allowed': $store.studyData.activeCard === $store.studyData.cards.length }"
                 :disabled="$store.studyData.activeCard === $store.studyData.cards.length"
-                class="text-base/6 sm:text-sm/5 font-medium text-zinc-900 dark:text-zinc-100 hover:underline px-2 sm:px-4 py-2"
-            >
+                class="text-base/6 sm:text-sm/5 font-medium text-zinc-900 dark:text-zinc-100 hover:underline px-2 sm:px-4 py-2">
                 <!-- SVG Icon for "Next" arrow -->
                 <svg class="h-6 w-6 text-zinc-900 dark:text-zinc-100" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
