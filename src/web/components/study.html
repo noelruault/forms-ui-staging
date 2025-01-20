@@ -17,7 +17,7 @@
             }" @click="if (card.id === $store.studyData.activeCard - 1) $store.studyData.activeCard--; if (card.id === $store.studyData.activeCard + 1 && $store.studyData.isAnswered($store.studyData.activeCard)) $store.studyData.activeCard++"
                 class="flex items-center justify-center">
 
-                <div
+                <div :data-card-id="card.id"
                     class="h-[60vh] w-full min-w-[80vw] sm:min-w-[65vw] lg:min-w-[50vw] flex flex-col p-6 space-y-4 border border-zinc-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 overflow-y-scroll">
                     <p class="text-base sm:text-lg md:text-xl font-semibold text-zinc-900 dark:text-zinc-100 mb-2 sm:mb-4"
                         x-text="`${card.id}. ${card.title}`"></p>
@@ -88,7 +88,8 @@
                         <!-- Explanation Accordion -->
                         <div x-data="{ expanded: false }"
                             x-show="card.explanation && $store.studyData.isAnswered(card.id)" class="w-full mt-4">
-                            <button @click="expanded = !expanded" type="button"
+                            <button @click="expanded = !expanded; if(expanded) $store.studyData.scrollToExplanation()"
+                                type="button"
                                 class="flex items-center justify-between mt-5 w-full text-left text-base/6 sm:text-sm/5 font-semibold text-zinc-900 dark:text-zinc-100">
                                 <span>Ver explicación</span>
                                 <svg :class="expanded ? 'rotate-180' : 'rotate-0'"
