@@ -1,0 +1,76 @@
+<script async type="module" crossorigin src="/assets/main.js"></script>
+<link rel="stylesheet" crossorigin href="/assets/main.css">
+<div class="content-box py-20 px-5">
+    <div class="mt-8">
+        <a id="backLink" data-link="true" href="/questions"
+            class="inline-flex items-center gap-2 text-sm/6 text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-300">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-4">
+                <path fill-rule="evenodd"
+                    d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z"
+                    clip-rule="evenodd" />
+            </svg>
+            Volver a preguntas
+        </a>
+
+        <div class="mt-6 flow-root">
+            <div class="flex items-center gap-4 mb-6">
+                <h1 class="text-2xl/8 font-semibold text-zinc-950 sm:text-xl/8 dark:text-white">Pregunta #<span
+                        id="questionId"></span></h1>
+                <span id="questionStatus"
+                    class="inline-flex items-center gap-x-1.5 rounded-md px-1.5 py-0.5 text-sm/5 font-medium sm:text-xs/5 forced-colors:outline bg-lime-400/20 text-lime-700 dark:bg-lime-400/10 dark:text-lime-300">
+                    Activa
+                </span>
+            </div>
+
+            <!-- Summary Section -->
+            <div id="questionSummary"></div>
+
+            <form id="questionForm" class="divide-y divide-zinc-950/5 dark:divide-white/5">
+                <div class="py-6">
+                    <h2 class="text-lg font-semibold mb-4 dark:text-white">Contenido de la Pregunta</h2>
+
+                    <div class="flow-root">
+                        <div class="">
+                            <div class="inline-block min-w-full align-middle">
+                                <!-- Contenido de la sección -->
+
+                                <table class="min-w-full text-left text-sm/6 text-zinc-950 dark:text-white">
+                                    <thead class="text-zinc-500 dark:text-zinc-400">
+                                        <tr class="">
+
+                                            <th
+                                                class="border-b border-b-zinc-950/10 px-4 py-2 font-medium dark:border-b-white/10 sm:first:pl-1 sm:last:pr-1">
+                                                Clave
+                                            </th>
+                                            <th
+                                                class="border-b border-b-zinc-950/10 px-4 py-2 font-medium dark:border-b-white/10 sm:first:pl-1 sm:last:pr-1">
+                                                Valor
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+                <div class="pt-6 flex justify-end gap-3">
+                    <button type="button" id="deleteQuestion" class="px-4 py-2 text-red-500 hover:text-red-700">
+                        Eliminar
+                    </button>
+                    <button type="submit" class="px-4 py-2 bg-zinc-600 hover:bg-zinc-500 text-white rounded-lg">
+                        Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
